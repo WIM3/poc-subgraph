@@ -1,0 +1,37 @@
+{
+  "name": "poc-subgraph",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "update-abis": "ts-node ./scripts/updateABIs.ts",
+    "update-configs": "ts-node ./scripts/updateConfigs.ts",
+    "clean": "rm -rf ./generated/",
+    "prepare:optimism-goerli": "npm run update-abis optimism-goerli && npm run update-configs && npm run clean",
+    "prepare:optimism": "npm run update-abis optimism && npm run update-configs && npm run clean",
+    "prepare": "npm run prepare:optimism",
+    "generate-manifest:optimism-goerli": "npm run prepare:optimism-goerli && mustache configs/optimismGoerli.json subgraph.template.yaml > subgraph.yaml",
+    "generate-manifest:optimism": "npm run prepare:optimism && mustache configs/optimism.json subgraph.template.yaml > subgraph.yaml",
+    "generate-constants:optimism-goerli": "npm run prepare:optimism-goerli && mustache configs/optimismGoerli.json src/constants/index.ts.template > src/constants/index.ts",
+    "generate-constants:optimism": "npm run prepare:optimism && mustache configs/optimism.json src/constants/index.ts.template > src/constants/index.ts",
+    "codegen:optimism-goerli": "npm run generate-manifest:optimism-goerli && npm run generate-constants:optimism-goerli && graph codegen",
+    "codegen:optimism": "npm run generate-manifest:optimism && npm run generate-constants:optimism && graph codegen",
+    "deploy-the-graph:optimism-goerli": "npm run codegen:optimism-goerli && graph deploy --product hosted-service perpetual-protocol/perpetual-v2-optimism-goerli",
+    "deploy-the-graph:optimism": "npm run codegen:optimism && graph deploy --product hosted-service perpetual-protocol/perpetual-v2-optimism",
+    "health-check": "ts-node ./scripts/healthCheck.ts",
+    "list-subgraph-ids": "ts-node ./scripts/listSubgraphIds.ts"
+  },
+  "author": "",
+  "license": "BSD 3-Clause License",
+  "devDependencies": {
+    "@graphprotocol/graph-cli": "^0.59.0",
+    "@graphprotocol/graph-ts": "0.28.1",
+    "@perp/curie-deployments": "2023.2.21-1676965315297",
+    "@types/node-fetch": "2.5.12",
+    "@uniswap/v3-core": "1.0.0",
+    "mustache": "4.2.0",
+    "node-fetch": "2.6.1",
+    "prettier": "2.3.2",
+    "ts-node": "10.2.0"
+  }
+}
