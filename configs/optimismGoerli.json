@@ -1,0 +1,137 @@
+{
+  "name": "optimismGoerli",
+  "network": "optimism-goerli",
+  "core": {
+    "chainId": 420,
+    "collaterals": [
+      {
+        "address": "0x3DB9224ae32D8f1c825fCA9138bb21d4983F42c6",
+        "decimals": 6,
+        "name": "Test Tether",
+        "priceFeedAddress": "0x7539E08d3e5867C06aFC11A7d31C23364A6300A4",
+        "symbol": "TestUSDT"
+      },
+      {
+        "address": "0x648FD1C74213F3B7Bb14B2D7C38bF062C8dfB4F9",
+        "decimals": 8,
+        "name": "Test Wrapped BTC",
+        "priceFeedAddress": "0x48234EE3de52395AED8f8ACBaa0A50D226e91f23",
+        "symbol": "TestWBTC"
+      },
+      {
+        "address": "0x4200000000000000000000000000000000000006",
+        "decimals": 18,
+        "name": "Wrapped Ether",
+        "priceFeedAddress": "0x985852b1B17d8389f8D85D3edaFC0aCbBfc2bfB5",
+        "symbol": "WETH"
+      },
+      {
+        "address": "0x320B88D360660F81615930f41028aE6359F825Ce",
+        "decimals": 18,
+        "name": "Frax",
+        "priceFeedAddress": "0x7539E08d3e5867C06aFC11A7d31C23364A6300A4",
+        "symbol": "FRAX"
+      },
+      {
+        "address": "0x9E16Fc70FAb64414C59E7423d494f8E9Ba5632A5",
+        "decimals": 6,
+        "name": "USDT",
+        "priceFeedAddress": "0x7539E08d3e5867C06aFC11A7d31C23364A6300A4",
+        "symbol": "USDT"
+      }
+    ],
+    "contracts": {
+      "ClearingHouseConfig": {
+        "address": "0x2228Ef5D30Df6C91D5848230e16Ed4a673618c4c",
+        "createdBlockNumber": 15034789,
+        "name": "contracts/ClearingHouseConfig.sol:ClearingHouseConfig"
+      },
+      "InsuranceFund": {
+        "address": "0xded9D08447588731e9a76a5cA6e3d1892A787d7a",
+        "createdBlockNumber": 15034795,
+        "name": "contracts/InsuranceFund.sol:InsuranceFund"
+      },
+      "MarketRegistry": {
+        "address": "0x7CB4183b2e704dB5d29f83C5B04D747Dd82118e7",
+        "createdBlockNumber": 15034830,
+        "name": "contracts/MarketRegistry.sol:MarketRegistry"
+      },
+      "OrderBook": {
+        "address": "0x46077dACBda52a999eFc2D2d1945C95485F86A67",
+        "createdBlockNumber": 15034838,
+        "name": "contracts/OrderBook.sol:OrderBook"
+      },
+      "Exchange": {
+        "address": "0x413c9900D5c0eBC499846fa2Cd9b3AF7E4994A19",
+        "createdBlockNumber": 15034852,
+        "name": "contracts/Exchange.sol:Exchange"
+      },
+      "AccountBalance": {
+        "address": "0x19b4dAbFAcCcb1BA0b4b4ea3B09752EeB8aDE4b8",
+        "createdBlockNumber": 15034846,
+        "name": "contracts/AccountBalance.sol:AccountBalance"
+      },
+      "Vault": {
+        "address": "0x8fc4E685A1CA83F116217680164A7154B216Df35",
+        "createdBlockNumber": 15034858,
+        "name": "contracts/Vault.sol:Vault"
+      },
+      "CollateralManager": {
+        "address": "0xf9AC6d3A21d4c8132F67353A0041A71AE46275E5",
+        "createdBlockNumber": 15034864,
+        "name": "contracts/CollateralManager.sol:CollateralManager"
+      },
+      "ClearingHouse": {
+        "address": "0x3A5b694d059CD244BB8E5b98D45EFCB478339c2c",
+        "createdBlockNumber": 15034871,
+        "name": "contracts/ClearingHouse.sol:ClearingHouse"
+      },
+      "DelegateApproval": {
+        "address": "0x35334127728416EC4B8FbDaf5801B2CAc79aBe50",
+        "createdBlockNumber": 1568686,
+        "name": "contracts/DelegateApproval.sol:DelegateApproval"
+      },
+      "QuoteToken": {
+        "address": "0xA77A1064e9A14f8E78A7ACE7079b87d27Dc7305b",
+        "createdBlockNumber": 15034804,
+        "name": "contracts/QuoteToken.sol:QuoteToken"
+      },
+      "PriceFeedUpdater": {
+        "address": "0xE9832693acb3095FC3690B122B0aC976Dda75217",
+        "createdBlockNumber": 15034810,
+        "name": "contracts/PriceFeedUpdater.sol:PriceFeedUpdater"
+      },
+      "ETHUSDChainlinkPriceFeedV2": {
+        "address": "0x9857Ec7fCb83077F5BaCA64f803CE897B6E0F776",
+        "createdBlockNumber": 1573339,
+        "name": "contracts/ChainlinkPriceFeedV2.sol:ChainlinkPriceFeedV2"
+      },
+      "vETH": {
+        "address": "0xd46537fb8607071fD20754f8886696bB3B6763C5",
+        "createdBlockNumber": 15034814,
+        "name": "contracts/BaseToken.sol:BaseToken"
+      }
+    },
+    "externalContracts": {
+      "FRAX": "0x320B88D360660F81615930f41028aE6359F825Ce",
+      "TestUSDT": "0x3DB9224ae32D8f1c825fCA9138bb21d4983F42c6",
+      "TestUST": "0x75eB27F52C7145E7Be1ed4CbeCe1874E06A7A46A",
+      "TestWBTC": "0x648FD1C74213F3B7Bb14B2D7C38bF062C8dfB4F9",
+      "USDC": "0xe5e0DE0ABfEc2FFFaC167121E51d7D8f57C8D9bC",
+      "USDT": "0x9E16Fc70FAb64414C59E7423d494f8E9Ba5632A5",
+      "UniswapV3Factory": "0xCe8Df2f61A30319c425Db724046B7B48299003F5",
+      "WETH9": "0x4200000000000000000000000000000000000006"
+    },
+    "network": "optimism-goerli",
+    "pools": [
+      {
+        "address": "0x5e463a709e58088ed5f08Ee3AB6953Ae8f046889",
+        "baseAddress": "0xd46537fb8607071fD20754f8886696bB3B6763C5",
+        "baseSymbol": "vETH",
+        "quoteAddress": "0xA77A1064e9A14f8E78A7ACE7079b87d27Dc7305b",
+        "quoteSymbol": "vUSDC"
+      }
+    ],
+    "version": "2.4.3"
+  }
+}
