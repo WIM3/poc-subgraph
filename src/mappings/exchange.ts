@@ -12,7 +12,7 @@ export function handleFundingUpdated(event: FundingUpdatedEvent): void {
     fundingUpdated.timestamp = event.block.timestamp
     fundingUpdated.txHash = event.transaction.hash
     fundingUpdated.baseToken = event.params.baseToken
-    fundingUpdated.markTwap = fromWei(event.params.markTwap)
+    fundingUpdated.markTwap = fromWei(event.params.marketTwap)
     fundingUpdated.indexTwap = fromWei(event.params.indexTwap)
     // daily funding rate = (markTwap - indexTwap) / indexTwap
     fundingUpdated.dailyFundingRate = fundingUpdated.markTwap
