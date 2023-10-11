@@ -4,14 +4,10 @@ import {
     Market,
     OpenOrder,
     Protocol,
-    ProtocolDayData,
     ProtocolEventInfo,
     ProtocolTokenBalance,
-    ReferralCode,
-    ReferralCodeDayData,
     Token,
     Trader,
-    TraderDayData,
     TraderMarket,
     TraderTokenBalance,
 } from "../../generated/schema"
@@ -115,8 +111,6 @@ export function getOrCreateTrader(traderAddr: Address): Trader {
         trader.totalPnl = BD_ZERO
         trader.blockNumber = BI_ZERO
         trader.timestamp = BI_ZERO
-        trader.refereeCode = ""
-        trader.referrerCode = ""
         trader.save()
     }
     return trader
@@ -248,60 +242,7 @@ export function getOrCreateProtocolTokenBalance(tokenAddr: Address): ProtocolTok
     return tokenBalance
 }
 
-export function getTraderDayData(event: ethereum.Event, trader: Address): TraderDayData {
-    let _trader = getOrCreateTrader(trader)
-    let timestamp = event.block.timestamp.toI32()
-    let dayID = timestamp / SECONDS_IN_A_DAY
-    let id = _trader.id + "-" + dayID.toString()
 
-    let dayData = TraderDayData.load(id)
-    let dayStartTimestamp = dayID * SECONDS_IN_A_DAY
-
-    if (!dayData) {
-        dayData = new TraderDayData(id)
-        dayData.date = BigInt.fromI32(dayStartTimestamp)
-        dayData.tradingVolume = BD_ZERO
-        dayData.tradingFee = BD_ZERO
-        dayData.trader = _trader.id
-        dayData.save()
-    }
-    return dayData!
-}
-
-export function createReferralCode(referralCode: string, referrer: Address, createdAt: BigInt): ReferralCode {
-    let _referralCode = new ReferralCode(referralCode)
-    let _referrer = getOrCreateTrader(referrer)
-    _referralCode.referrer = _referrer.id
-    _referralCode.createdAt = createdAt
-    _referralCode.registeredOnChain = true
-    _referralCode.numReferees = BI_ZERO
-    _referralCode.save()
-    return _referralCode!
-}
-
-export function getReferralCode(referralCode: string): ReferralCode | null {
-    return ReferralCode.load(referralCode)
-}
-
-export function getReferralCodeDayData(event: ethereum.Event, referralCode: string): ReferralCodeDayData {
-    let timestamp = event.block.timestamp.toI32()
-    let dayID = timestamp / SECONDS_IN_A_DAY
-    let id = referralCode + "-" + dayID.toString()
-    let dayData = ReferralCodeDayData.load(id)
-    let dayStartTimestamp = dayID * SECONDS_IN_A_DAY
-
-    if (!dayData) {
-        dayData = new ReferralCodeDayData(id)
-        dayData.referralCode = referralCode
-        dayData.tradingVolume = BD_ZERO
-        dayData.tradingFee = BD_ZERO
-        dayData.date = BigInt.fromI32(dayStartTimestamp)
-        dayData.newReferees = []
-        dayData.activeReferees = []
-        dayData.save()
-    }
-    return dayData!
-}
 
 export function removeAddressFromList(addresses: string[], addressToRemove: string): string[] {
     let spliceIndex = -1
@@ -316,19 +257,3 @@ export function removeAddressFromList(addresses: string[], addressToRemove: stri
     return addresses
 }
 
-export function getOrCreateProtocolDayData(event: ethereum.Event): ProtocolDayData {
-    let timestamp = event.block.timestamp.toI32()
-    const dayID = timestamp / SECONDS_IN_A_DAY
-    const dayStartTimestamp = dayID * SECONDS_IN_A_DAY
-    const id = dayID.toString()
-    let protocolDayData = ProtocolDayData.load(id)
-    if (!protocolDayData) {
-        protocolDayData = new ProtocolDayData(id)
-        protocolDayData.date = BigInt.fromI32(dayStartTimestamp)
-        protocolDayData.tradingFee = BD_ZERO
-        protocolDayData.tradingVolume = BD_ZERO
-        protocolDayData.liquidationFee = BD_ZERO
-        protocolDayData.save()
-    }
-    return protocolDayData!
-}
