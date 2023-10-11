@@ -418,6 +418,27 @@ export class AccountBalance extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  getMarkPrice(baseToken: Address): BigInt {
+    let result = super.call("getMarkPrice", "getMarkPrice(address):(uint256)", [
+      ethereum.Value.fromAddress(baseToken)
+    ]);
+
+    return result[0].toBigInt();
+  }
+
+  try_getMarkPrice(baseToken: Address): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "getMarkPrice",
+      "getMarkPrice(address):(uint256)",
+      [ethereum.Value.fromAddress(baseToken)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   getOrderBook(): Address {
     let result = super.call("getOrderBook", "getOrderBook():(address)", []);
 

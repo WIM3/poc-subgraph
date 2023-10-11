@@ -63,7 +63,7 @@ export class FundingUpdated__Params {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get markTwap(): BigInt {
+  get marketTwap(): BigInt {
     return this._event.parameters[1].value.toBigInt();
   }
 
@@ -211,6 +211,10 @@ export class Exchange__swapResultValue0Struct extends ethereum.Tuple {
 
   get isPartialClose(): boolean {
     return this[9].toBoolean();
+  }
+
+  get closedRatio(): i32 {
+    return this[10].toI32();
   }
 }
 
@@ -512,6 +516,38 @@ export class Exchange extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  getSqrtMarketTwapX96(baseToken: Address, twapInterval: BigInt): BigInt {
+    let result = super.call(
+      "getSqrtMarketTwapX96",
+      "getSqrtMarketTwapX96(address,uint32):(uint160)",
+      [
+        ethereum.Value.fromAddress(baseToken),
+        ethereum.Value.fromUnsignedBigInt(twapInterval)
+      ]
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_getSqrtMarketTwapX96(
+    baseToken: Address,
+    twapInterval: BigInt
+  ): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "getSqrtMarketTwapX96",
+      "getSqrtMarketTwapX96(address,uint32):(uint160)",
+      [
+        ethereum.Value.fromAddress(baseToken),
+        ethereum.Value.fromUnsignedBigInt(twapInterval)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   isOverPriceSpread(baseToken: Address): boolean {
     let result = super.call(
       "isOverPriceSpread",
@@ -602,7 +638,7 @@ export class Exchange extends ethereum.SmartContract {
   ): Exchange__swapResultValue0Struct {
     let result = super.call(
       "swap",
-      "swap((address,address,bool,bool,bool,uint256,uint160)):((uint256,uint256,int256,int256,uint256,uint256,int256,uint256,int24,bool))",
+      "swap((address,address,bool,bool,bool,uint256,uint160)):((uint256,uint256,int256,int256,uint256,uint256,int256,uint256,int24,bool,uint24))",
       [ethereum.Value.fromTuple(params)]
     );
 
@@ -614,7 +650,7 @@ export class Exchange extends ethereum.SmartContract {
   ): ethereum.CallResult<Exchange__swapResultValue0Struct> {
     let result = super.tryCall(
       "swap",
-      "swap((address,address,bool,bool,bool,uint256,uint160)):((uint256,uint256,int256,int256,uint256,uint256,int256,uint256,int24,bool))",
+      "swap((address,address,bool,bool,bool,uint256,uint160)):((uint256,uint256,int256,int256,uint256,uint256,int256,uint256,int24,bool,uint24))",
       [ethereum.Value.fromTuple(params)]
     );
     if (result.reverted) {
@@ -976,6 +1012,10 @@ export class SwapCallValue0Struct extends ethereum.Tuple {
 
   get isPartialClose(): boolean {
     return this[9].toBoolean();
+  }
+
+  get closedRatio(): i32 {
+    return this[10].toI32();
   }
 }
 

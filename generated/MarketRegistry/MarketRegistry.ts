@@ -28,6 +28,50 @@ export class ClearingHouseChanged__Params {
   }
 }
 
+export class FeeDiscountRatioChanged extends ethereum.Event {
+  get params(): FeeDiscountRatioChanged__Params {
+    return new FeeDiscountRatioChanged__Params(this);
+  }
+}
+
+export class FeeDiscountRatioChanged__Params {
+  _event: FeeDiscountRatioChanged;
+
+  constructor(event: FeeDiscountRatioChanged) {
+    this._event = event;
+  }
+
+  get trader(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get discountRatio(): i32 {
+    return this._event.parameters[1].value.toI32();
+  }
+}
+
+export class FeeManagerChanged extends ethereum.Event {
+  get params(): FeeManagerChanged__Params {
+    return new FeeManagerChanged__Params(this);
+  }
+}
+
+export class FeeManagerChanged__Params {
+  _event: FeeManagerChanged;
+
+  constructor(event: FeeManagerChanged) {
+    this._event = event;
+  }
+
+  get account(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get isFeeManager(): boolean {
+    return this._event.parameters[1].value.toBoolean();
+  }
+}
+
 export class FeeRatioChanged extends ethereum.Event {
   get params(): FeeRatioChanged__Params {
     return new FeeRatioChanged__Params(this);
@@ -68,6 +112,28 @@ export class InsuranceFundFeeRatioChanged__Params {
   }
 
   get feeRatio(): i32 {
+    return this._event.parameters[1].value.toI32();
+  }
+}
+
+export class MarketMaxPriceSpreadRatioChanged extends ethereum.Event {
+  get params(): MarketMaxPriceSpreadRatioChanged__Params {
+    return new MarketMaxPriceSpreadRatioChanged__Params(this);
+  }
+}
+
+export class MarketMaxPriceSpreadRatioChanged__Params {
+  _event: MarketMaxPriceSpreadRatioChanged;
+
+  constructor(event: MarketMaxPriceSpreadRatioChanged) {
+    this._event = event;
+  }
+
+  get baseToken(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get spreadRatio(): i32 {
     return this._event.parameters[1].value.toI32();
   }
 }
@@ -153,6 +219,32 @@ export class MarketRegistry__getMarketInfoResultValue0Struct extends ethereum.Tu
 
   get insuranceFundFeeRatio(): i32 {
     return this[3].toI32();
+  }
+
+  get maxPriceSpreadRatio(): i32 {
+    return this[4].toI32();
+  }
+}
+
+export class MarketRegistry__getMarketInfoByTraderResultValue0Struct extends ethereum.Tuple {
+  get pool(): Address {
+    return this[0].toAddress();
+  }
+
+  get exchangeFeeRatio(): i32 {
+    return this[1].toI32();
+  }
+
+  get uniswapFeeRatio(): i32 {
+    return this[2].toI32();
+  }
+
+  get insuranceFundFeeRatio(): i32 {
+    return this[3].toI32();
+  }
+
+  get maxPriceSpreadRatio(): i32 {
+    return this[4].toI32();
   }
 }
 
@@ -267,7 +359,7 @@ export class MarketRegistry extends ethereum.SmartContract {
   ): MarketRegistry__getMarketInfoResultValue0Struct {
     let result = super.call(
       "getMarketInfo",
-      "getMarketInfo(address):((address,uint24,uint24,uint24))",
+      "getMarketInfo(address):((address,uint24,uint24,uint24,uint24))",
       [ethereum.Value.fromAddress(baseToken)]
     );
 
@@ -281,7 +373,7 @@ export class MarketRegistry extends ethereum.SmartContract {
   ): ethereum.CallResult<MarketRegistry__getMarketInfoResultValue0Struct> {
     let result = super.tryCall(
       "getMarketInfo",
-      "getMarketInfo(address):((address,uint24,uint24,uint24))",
+      "getMarketInfo(address):((address,uint24,uint24,uint24,uint24))",
       [ethereum.Value.fromAddress(baseToken)]
     );
     if (result.reverted) {
@@ -293,6 +385,74 @@ export class MarketRegistry extends ethereum.SmartContract {
         value[0].toTuple()
       )
     );
+  }
+
+  getMarketInfoByTrader(
+    trader: Address,
+    baseToken: Address
+  ): MarketRegistry__getMarketInfoByTraderResultValue0Struct {
+    let result = super.call(
+      "getMarketInfoByTrader",
+      "getMarketInfoByTrader(address,address):((address,uint24,uint24,uint24,uint24))",
+      [
+        ethereum.Value.fromAddress(trader),
+        ethereum.Value.fromAddress(baseToken)
+      ]
+    );
+
+    return changetype<MarketRegistry__getMarketInfoByTraderResultValue0Struct>(
+      result[0].toTuple()
+    );
+  }
+
+  try_getMarketInfoByTrader(
+    trader: Address,
+    baseToken: Address
+  ): ethereum.CallResult<
+    MarketRegistry__getMarketInfoByTraderResultValue0Struct
+  > {
+    let result = super.tryCall(
+      "getMarketInfoByTrader",
+      "getMarketInfoByTrader(address,address):((address,uint24,uint24,uint24,uint24))",
+      [
+        ethereum.Value.fromAddress(trader),
+        ethereum.Value.fromAddress(baseToken)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      changetype<MarketRegistry__getMarketInfoByTraderResultValue0Struct>(
+        value[0].toTuple()
+      )
+    );
+  }
+
+  getMarketMaxPriceSpreadRatio(baseToken: Address): i32 {
+    let result = super.call(
+      "getMarketMaxPriceSpreadRatio",
+      "getMarketMaxPriceSpreadRatio(address):(uint24)",
+      [ethereum.Value.fromAddress(baseToken)]
+    );
+
+    return result[0].toI32();
+  }
+
+  try_getMarketMaxPriceSpreadRatio(
+    baseToken: Address
+  ): ethereum.CallResult<i32> {
+    let result = super.tryCall(
+      "getMarketMaxPriceSpreadRatio",
+      "getMarketMaxPriceSpreadRatio(address):(uint24)",
+      [ethereum.Value.fromAddress(baseToken)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toI32());
   }
 
   getMaxOrdersPerMarket(): i32 {
@@ -390,6 +550,25 @@ export class MarketRegistry extends ethereum.SmartContract {
   try_hasPool(baseToken: Address): ethereum.CallResult<boolean> {
     let result = super.tryCall("hasPool", "hasPool(address):(bool)", [
       ethereum.Value.fromAddress(baseToken)
+    ]);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
+  isFeeManager(account: Address): boolean {
+    let result = super.call("isFeeManager", "isFeeManager(address):(bool)", [
+      ethereum.Value.fromAddress(account)
+    ]);
+
+    return result[0].toBoolean();
+  }
+
+  try_isFeeManager(account: Address): ethereum.CallResult<boolean> {
+    let result = super.tryCall("isFeeManager", "isFeeManager(address):(bool)", [
+      ethereum.Value.fromAddress(account)
     ]);
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -542,6 +721,74 @@ export class SetClearingHouseCall__Outputs {
   }
 }
 
+export class SetFeeDiscountRatioCall extends ethereum.Call {
+  get inputs(): SetFeeDiscountRatioCall__Inputs {
+    return new SetFeeDiscountRatioCall__Inputs(this);
+  }
+
+  get outputs(): SetFeeDiscountRatioCall__Outputs {
+    return new SetFeeDiscountRatioCall__Outputs(this);
+  }
+}
+
+export class SetFeeDiscountRatioCall__Inputs {
+  _call: SetFeeDiscountRatioCall;
+
+  constructor(call: SetFeeDiscountRatioCall) {
+    this._call = call;
+  }
+
+  get trader(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get discountRatio(): i32 {
+    return this._call.inputValues[1].value.toI32();
+  }
+}
+
+export class SetFeeDiscountRatioCall__Outputs {
+  _call: SetFeeDiscountRatioCall;
+
+  constructor(call: SetFeeDiscountRatioCall) {
+    this._call = call;
+  }
+}
+
+export class SetFeeManagerCall extends ethereum.Call {
+  get inputs(): SetFeeManagerCall__Inputs {
+    return new SetFeeManagerCall__Inputs(this);
+  }
+
+  get outputs(): SetFeeManagerCall__Outputs {
+    return new SetFeeManagerCall__Outputs(this);
+  }
+}
+
+export class SetFeeManagerCall__Inputs {
+  _call: SetFeeManagerCall;
+
+  constructor(call: SetFeeManagerCall) {
+    this._call = call;
+  }
+
+  get accountArg(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get isFeeManagerArg(): boolean {
+    return this._call.inputValues[1].value.toBoolean();
+  }
+}
+
+export class SetFeeManagerCall__Outputs {
+  _call: SetFeeManagerCall;
+
+  constructor(call: SetFeeManagerCall) {
+    this._call = call;
+  }
+}
+
 export class SetFeeRatioCall extends ethereum.Call {
   get inputs(): SetFeeRatioCall__Inputs {
     return new SetFeeRatioCall__Inputs(this);
@@ -606,6 +853,40 @@ export class SetInsuranceFundFeeRatioCall__Outputs {
   _call: SetInsuranceFundFeeRatioCall;
 
   constructor(call: SetInsuranceFundFeeRatioCall) {
+    this._call = call;
+  }
+}
+
+export class SetMarketMaxPriceSpreadRatioCall extends ethereum.Call {
+  get inputs(): SetMarketMaxPriceSpreadRatioCall__Inputs {
+    return new SetMarketMaxPriceSpreadRatioCall__Inputs(this);
+  }
+
+  get outputs(): SetMarketMaxPriceSpreadRatioCall__Outputs {
+    return new SetMarketMaxPriceSpreadRatioCall__Outputs(this);
+  }
+}
+
+export class SetMarketMaxPriceSpreadRatioCall__Inputs {
+  _call: SetMarketMaxPriceSpreadRatioCall;
+
+  constructor(call: SetMarketMaxPriceSpreadRatioCall) {
+    this._call = call;
+  }
+
+  get baseToken(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get ratio(): i32 {
+    return this._call.inputValues[1].value.toI32();
+  }
+}
+
+export class SetMarketMaxPriceSpreadRatioCall__Outputs {
+  _call: SetMarketMaxPriceSpreadRatioCall;
+
+  constructor(call: SetMarketMaxPriceSpreadRatioCall) {
     this._call = call;
   }
 }
