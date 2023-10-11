@@ -709,6 +709,16 @@
             "internalType": "struct Funding.Growth",
             "name": "globalFundingGrowth",
             "type": "tuple"
+          },
+          {
+            "internalType": "address",
+            "name": "pool",
+            "type": "address"
+          },
+          {
+            "internalType": "uint24",
+            "name": "insuranceFundFeeRatio",
+            "type": "uint24"
           }
         ],
         "internalType": "struct IOrderBook.ReplaySwapParams",

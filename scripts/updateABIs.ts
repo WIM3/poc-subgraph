@@ -29,7 +29,7 @@ async function main(): Promise<void> {
     for (const abiName of abiNames) {
         try {
             artifact = await import(
-                `@perp/curie-deployments/${env}/core/artifacts/contracts/${abiName}.sol/${abiName}.json`
+                `../v2artifacts/contracts/${abiName}.sol/${abiName}.json`
             )
         } catch (error) {
             console.warn(`ABI of contract ${abiName} not found in ${env}`)

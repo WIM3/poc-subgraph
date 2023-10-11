@@ -16,6 +16,44 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "address",
+        "name": "trader",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint24",
+        "name": "discountRatio",
+        "type": "uint24"
+      }
+    ],
+    "name": "FeeDiscountRatioChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isFeeManager",
+        "type": "bool"
+      }
+    ],
+    "name": "FeeManagerChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": false,
         "internalType": "address",
         "name": "baseToken",
@@ -48,6 +86,25 @@
       }
     ],
     "name": "InsuranceFundFeeRatioChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "baseToken",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint24",
+        "name": "spreadRatio",
+        "type": "uint24"
+      }
+    ],
+    "name": "MarketMaxPriceSpreadRatioChanged",
     "type": "event"
   },
   {
@@ -226,11 +283,86 @@
             "internalType": "uint24",
             "name": "insuranceFundFeeRatio",
             "type": "uint24"
+          },
+          {
+            "internalType": "uint24",
+            "name": "maxPriceSpreadRatio",
+            "type": "uint24"
           }
         ],
         "internalType": "struct IMarketRegistry.MarketInfo",
         "name": "",
         "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "trader",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "baseToken",
+        "type": "address"
+      }
+    ],
+    "name": "getMarketInfoByTrader",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "pool",
+            "type": "address"
+          },
+          {
+            "internalType": "uint24",
+            "name": "exchangeFeeRatio",
+            "type": "uint24"
+          },
+          {
+            "internalType": "uint24",
+            "name": "uniswapFeeRatio",
+            "type": "uint24"
+          },
+          {
+            "internalType": "uint24",
+            "name": "insuranceFundFeeRatio",
+            "type": "uint24"
+          },
+          {
+            "internalType": "uint24",
+            "name": "maxPriceSpreadRatio",
+            "type": "uint24"
+          }
+        ],
+        "internalType": "struct IMarketRegistry.MarketInfo",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "baseToken",
+        "type": "address"
+      }
+    ],
+    "name": "getMarketMaxPriceSpreadRatio",
+    "outputs": [
+      {
+        "internalType": "uint24",
+        "name": "",
+        "type": "uint24"
       }
     ],
     "stateMutability": "view",
@@ -332,6 +464,25 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "isFeeManager",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "owner",
     "outputs": [
@@ -368,6 +519,42 @@
     "inputs": [
       {
         "internalType": "address",
+        "name": "trader",
+        "type": "address"
+      },
+      {
+        "internalType": "uint24",
+        "name": "discountRatio",
+        "type": "uint24"
+      }
+    ],
+    "name": "setFeeDiscountRatio",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "accountArg",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "isFeeManagerArg",
+        "type": "bool"
+      }
+    ],
+    "name": "setFeeManager",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "baseToken",
         "type": "address"
       },
@@ -396,6 +583,24 @@
       }
     ],
     "name": "setInsuranceFundFeeRatio",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "baseToken",
+        "type": "address"
+      },
+      {
+        "internalType": "uint24",
+        "name": "ratio",
+        "type": "uint24"
+      }
+    ],
+    "name": "setMarketMaxPriceSpreadRatio",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

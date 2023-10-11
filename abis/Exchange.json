@@ -37,7 +37,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "markTwap",
+        "name": "marketTwap",
         "type": "uint256"
       },
       {
@@ -283,6 +283,30 @@
       }
     ],
     "name": "getSqrtMarkTwapX96",
+    "outputs": [
+      {
+        "internalType": "uint160",
+        "name": "",
+        "type": "uint160"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "baseToken",
+        "type": "address"
+      },
+      {
+        "internalType": "uint32",
+        "name": "twapInterval",
+        "type": "uint32"
+      }
+    ],
+    "name": "getSqrtMarketTwapX96",
     "outputs": [
       {
         "internalType": "uint160",
@@ -551,6 +575,11 @@
             "internalType": "bool",
             "name": "isPartialClose",
             "type": "bool"
+          },
+          {
+            "internalType": "uint24",
+            "name": "closedRatio",
+            "type": "uint24"
           }
         ],
         "internalType": "struct IExchange.SwapResponse",
