@@ -12,7 +12,7 @@
     "generate-constants:optimism": "npx mustache configs/optimism.json src/constants/index.ts.template > src/constants/index.ts",
     "codegen:optimism-goerli": "npm run generate-manifest:optimism-goerli && npm run generate-constants:optimism-goerli && graph codegen",
     "codegen:optimism": "npm run generate-manifest:optimism && npm run generate-constants:optimism && graph codegen",
-    "deploy-the-graph:optimism-goerli": "npm run codegen:optimism-goerli && graph deploy --studio poc-protocol-opgoerli",
+    "deploy-the-graph:optimism-goerli": "npm run codegen:optimism-goerli && graph deploy --studio poc-protocol",
     "deploy-the-graph:optimism": "npm run codegen:optimism && graph deploy -studio poc-protocol",
     "health-check": "ts-node ./scripts/healthCheck.ts",
     "list-subgraph-ids": "ts-node ./scripts/listSubgraphIds.ts"

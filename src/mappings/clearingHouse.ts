@@ -274,7 +274,7 @@ export function handleLiquidityChanged(event: LiquidityChangedEvent): void {
         const baseToken = event.params.baseToken.toHexString()
         const baseTokenMap = hardFixedDataMap!.get(txHash)
         if (baseTokenMap) {
-            const fixedDataMap = baseTokenMap!.get(baseToken)
+            const fixedDataMap = baseTokenMap.get(baseToken)
             if (fixedDataMap) {
                 traderMarket.takerPositionSize = fixedDataMap.get("takerPositionSize")!
                 traderMarket.openNotional = fixedDataMap.get("openNotional")!

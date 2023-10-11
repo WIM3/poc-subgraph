@@ -1,0 +1,229 @@
+specVersion: 0.0.4
+description: Perpetual Protocol Curie (V2) Subgraph
+repository: https://github.com/perpetual-protocol/perp-curie-subgraph
+schema:
+  file: schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: MarketRegistry
+    network: optimism-goerli
+    source:
+      abi: MarketRegistry
+      address: "0x7CB4183b2e704dB5d29f83C5B04D747Dd82118e7"
+      startBlock: 15034830
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: MarketRegistry/MarketRegistry.wasm
+      entities:
+        - Protocol
+        - ProtocolEventInfo
+        - Market
+      abis:
+        - name: MarketRegistry
+          file: MarketRegistry/abis/MarketRegistry.json
+      eventHandlers:
+        - event: PoolAdded(indexed address,indexed uint24,indexed address)
+          handler: handlePoolAdded
+        - event: FeeRatioChanged(address,uint24)
+          handler: handleFeeRatioChanged
+  - kind: ethereum/contract
+    name: Vault
+    network: optimism-goerli
+    source:
+      abi: Vault
+      address: "0x8fc4E685A1CA83F116217680164A7154B216Df35"
+      startBlock: 15034858
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: Vault/Vault.wasm
+      entities:
+        - Deposited
+        - Withdrawn
+        - CollateralLiquidated
+        - BadDebtSettled
+        - Protocol
+        - ProtocolEventInfo
+        - ProtocolTokenBalance
+        - Trader
+        - TraderTokenBalance
+        - Token
+      abis:
+        - name: Vault
+          file: Vault/abis/Vault.json
+      eventHandlers:
+        - event: Deposited(indexed address,indexed address,uint256)
+          handler: handleDeposited
+        - event: Withdrawn(indexed address,indexed address,uint256)
+          handler: handleWithdrawn
+        - event: CollateralLiquidated(indexed address,indexed address,indexed
+            address,uint256,uint256,uint256,uint24)
+          handler: handleCollateralLiquidated
+        - event: BadDebtSettled(indexed address,uint256)
+          handler: handleBadDebtSettled
+  - kind: ethereum/contract
+    name: Exchange
+    network: optimism-goerli
+    source:
+      abi: Exchange
+      address: "0x413c9900D5c0eBC499846fa2Cd9b3AF7E4994A19"
+      startBlock: 15034852
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: Exchange/Exchange.wasm
+      entities:
+        - FundingUpdated
+        - ProtocolEventInfo
+      abis:
+        - name: Exchange
+          file: Exchange/abis/Exchange.json
+      eventHandlers:
+        - event: FundingUpdated(indexed address,uint256,uint256)
+          handler: handleFundingUpdated
+  - kind: ethereum/contract
+    name: ClearingHouse
+    network: optimism-goerli
+    source:
+      abi: ClearingHouse
+      address: "0x3A5b694d059CD244BB8E5b98D45EFCB478339c2c"
+      startBlock: 15034871
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ClearingHouse/ClearingHouse.wasm
+      entities:
+        - PositionChanged
+        - PositionClosed
+        - PositionLiquidated
+        - LiquidityChanged
+        - FundingPaymentSettled
+        - Protocol
+        - ProtocolEventInfo
+        - Market
+        - Trader
+        - TraderMarket
+        - Maker
+        - OpenOrder
+        - TraderDayData
+        - ReferralCodeDayData
+        - ReferralCode
+      abis:
+        - name: ClearingHouse
+          file: ClearingHouse/abis/ClearingHouse.json
+      eventHandlers:
+        - event: PositionChanged(indexed address,indexed
+            address,int256,int256,uint256,int256,int256,uint256)
+          handler: handlePositionChanged
+        - event: PositionClosed(indexed address,indexed address,int256,int256,int256,int256,uint256)
+          handler: handlePositionClosed
+        - event: PositionLiquidated(indexed address,indexed address,uint256,uint256,uint256,address)
+          handler: handlePositionLiquidated
+        - event: LiquidityChanged(indexed address,indexed address,indexed
+            address,int24,int24,int256,int256,int128,uint256)
+          handler: handleLiquidityChanged
+        - event: FundingPaymentSettled(indexed address,indexed address,int256)
+          handler: handleFundingPaymentSettled
+        - event: ReferredPositionChanged(indexed bytes32)
+          handler: handleReferralPositionChanged
+  - kind: ethereum/contract
+    name: AccountBalance
+    network: optimism-goerli
+    source:
+      abi: AccountBalance
+      address: "0x19b4dAbFAcCcb1BA0b4b4ea3B09752EeB8aDE4b8"
+      startBlock: 15034846
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: AccountBalance/AccountBalance.wasm
+      entities:
+        - PnlRealized
+        - Trader
+        - ProtocolEventInfo
+      abis:
+        - name: AccountBalance
+          file: AccountBalance/abis/AccountBalance.json
+      eventHandlers:
+        - event: PnlRealized(indexed address,int256)
+          handler: handlePnlRealized
+  - kind: ethereum/contract
+    name: InsuranceFund
+    network: optimism-goerli
+    source:
+      abi: InsuranceFund
+      address: "0xded9D08447588731e9a76a5cA6e3d1892A787d7a"
+      startBlock: 15034795
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: InsuranceFund/InsuranceFund.wasm
+      entities:
+        - Repaid
+        - FeeDistributed
+        - DistributionThresholdChanged
+        - Protocol
+        - ProtocolEventInfo
+      abis:
+        - name: InsuranceFund
+          file: InsuranceFund/abis/InsuranceFund.json
+      eventHandlers:
+        - event: Repaid(uint256,uint256)
+          handler: handleRepaid
+        - event: FeeDistributed(uint256,uint256,uint256,uint256)
+          handler: handleFeeDistributed
+        - event: DistributionThresholdChanged(uint256)
+          handler: handleDistributionThresholdChanged
+  - kind: ethereum/contract
+    name: CollateralManager
+    network: optimism-goerli
+    source:
+      abi: CollateralManager
+      address: "0xf9AC6d3A21d4c8132F67353A0041A71AE46275E5"
+      startBlock: 15034864
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: CollateralManager/CollateralManager.wasm
+      entities:
+        - CollateralAdded
+        - Token
+        - ProtocolEventInfo
+      abis:
+        - name: CollateralManager
+          file: CollateralManager/abis/CollateralManager.json
+      eventHandlers:
+        - event: CollateralAdded(indexed address,address,uint24,uint24,uint256)
+          handler: handleCollateralAdded
+  - kind: ethereum/contract
+    name: DelegateApproval
+    network: optimism-goerli
+    source:
+      abi: DelegateApproval
+      address: "0x35334127728416EC4B8FbDaf5801B2CAc79aBe50"
+      startBlock: 1568686
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: DelegateApproval/DelegateApproval.wasm
+      entities:
+        - DelegationApproved
+        - DelegationRevoked
+        - ProtocolEventInfo
+      abis:
+        - name: DelegateApproval
+          file: DelegateApproval/abis/DelegateApproval.json
+      eventHandlers:
+        - event: DelegationApproved(indexed address,address,uint8)
+          handler: handleDelegationApproved
+        - event: DelegationRevoked(indexed address,address,uint8)
+          handler: handleDelegationRevoked
